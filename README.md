@@ -87,18 +87,25 @@ Below should support 10-20 users with jisti meet and mattermost, but requires re
 Docker
 
 #### Services
-Mattermost (and postgres db) - Communication Platform
-WUD - Automation for updating docker containers
-Caddy - Reverse proxy and cert management via built in ACME
+Versions listed at time of this repo creation, the goal would be to stay on the latest stable branch via WUD.
 
-### Setup Process
+- Mattermost (and postgres db) - V11.4.0 - Communication Platform
+    - Jitsi Meet - video integration via Mattermost
+- WUD - V8.2.0 - Automation for updating docker containers
+- Caddy - V2.10.2 - Reverse proxy and cert management via built in ACME
+
+### Install Process
+We will be deploying on a debian (13.3.0 Trixie) linux system that is up to date and has the following preinstalled: Git (version 28.2.2) & Docker Engine (version: 28.2.2) & sudo installed, account with sudo level permissions.
+
+1. 
 
 
+### Service Setup Process
 
 
 ## Resources:
 ### Mattermost:
-- Github (docker deployment):https://github.com/mattermost/docker
+- Github (docker deployment): https://github.com/mattermost/docker
 - Github: https://github.com/mattermost/mattermost
 - DockerHub (mattermost-team-edition): https://hub.docker.com/r/mattermost/mattermost-team-edition
 - Website: https://mattermost.com/
@@ -117,3 +124,9 @@ Caddy - Reverse proxy and cert management via built in ACME
 - Website: https://caddyserver.com/
 - Community: https://caddy.community/
 - Documentation: https://caddyserver.com/docs/
+### WUD:
+- Github: https://github.com/getwud/wud
+- DockerHub: https://hub.docker.com/r/getwud/wud
+- Website: https://getwud.github.io/wud/#/
+- Community: https://github.com/getwud/wud/discussions
+- Documentation: https://getwud.github.io/wud/#/?id=introduction
