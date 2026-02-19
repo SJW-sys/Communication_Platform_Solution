@@ -83,7 +83,17 @@ Below should support 10-20 users with jisti meet and mattermost, but requires re
 - Azure
 - GCP
 
+### Installation Type
+Docker
+
+#### Services
+Mattermost (and postgres db) - Communication Platform
+WUD - Automation for updating docker containers
+Caddy - Reverse proxy and cert management via built in ACME
+
 ### Setup Process
+
+
 
 
 ## Resources:
@@ -93,9 +103,17 @@ Github: https://github.com/mattermost/mattermost
 DockerHub (mattermost-team-edition): https://hub.docker.com/r/mattermost/mattermost-team-edition
 Website: https://mattermost.com/
 Community: https://forum.mattermost.com/
+Documentation: https://docs.mattermost.com/
 ### Jitsi Meet:
 Github: https://github.com/jitsi/jitsi-meet
 DockerHub: https://hub.docker.com/r/jitsi/web
 Website: https://jitsi.org/jitsi-meet/
 Community: https://community.jitsi.org/
+Documentation: https://jitsi.github.io/handbook/docs/intro/
 Demo: https://meet.jit.si/
+### Caddy:
+Github: https://github.com/caddyserver/caddy
+DockerHub: https://hub.docker.com/_/caddy
+Website: https://caddyserver.com/
+Community: https://caddy.community/
+Documentation: https://caddyserver.com/docs/
