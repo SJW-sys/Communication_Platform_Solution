@@ -98,22 +98,22 @@ Caddy - Reverse proxy and cert management via built in ACME
 
 ## Resources:
 ### Mattermost:
-Github (docker deployment):https://github.com/mattermost/docker
-Github: https://github.com/mattermost/mattermost
-DockerHub (mattermost-team-edition): https://hub.docker.com/r/mattermost/mattermost-team-edition
-Website: https://mattermost.com/
-Community: https://forum.mattermost.com/
-Documentation: https://docs.mattermost.com/
+- Github (docker deployment):https://github.com/mattermost/docker
+- Github: https://github.com/mattermost/mattermost
+- DockerHub (mattermost-team-edition): https://hub.docker.com/r/mattermost/mattermost-team-edition
+- Website: https://mattermost.com/
+- Community: https://forum.mattermost.com/
+- Documentation: https://docs.mattermost.com/
 ### Jitsi Meet:
-Github: https://github.com/jitsi/jitsi-meet
-DockerHub: https://hub.docker.com/r/jitsi/web
-Website: https://jitsi.org/jitsi-meet/
-Community: https://community.jitsi.org/
-Documentation: https://jitsi.github.io/handbook/docs/intro/
-Demo: https://meet.jit.si/
+- Github: https://github.com/jitsi/jitsi-meet
+- DockerHub: https://hub.docker.com/r/jitsi/web
+- Website: https://jitsi.org/jitsi-meet/
+- Community: https://community.jitsi.org/
+- Documentation: https://jitsi.github.io/handbook/docs/intro/
+- Demo: https://meet.jit.si/
 ### Caddy:
-Github: https://github.com/caddyserver/caddy
-DockerHub: https://hub.docker.com/_/caddy
-Website: https://caddyserver.com/
-Community: https://caddy.community/
-Documentation: https://caddyserver.com/docs/
+- Github: https://github.com/caddyserver/caddy
+- DockerHub: https://hub.docker.com/_/caddy
+- Website: https://caddyserver.com/
+- Community: https://caddy.community/
+- Documentation: https://caddyserver.com/docs/
