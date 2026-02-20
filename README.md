@@ -72,8 +72,8 @@ There are other alternatives if willing to limit scope, or break out tools (vide
 - WUD (Whatsupdocker) docker sock access, can remove but updates rely on human interaction then
 
 ### Host Requirements:
-mattermost: https://docs.mattermost.com/deployment-guide/software-hardware-requirements.html
-Jitsi Meet: https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements/
+- mattermost: https://docs.mattermost.com/deployment-guide/software-hardware-requirements.html
+- Jitsi Meet: https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements/
 
 #### Default Deployment Specs:
 Below should support 10-20 users with jisti meet and mattermost, but requires real world testing.
