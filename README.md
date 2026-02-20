@@ -8,8 +8,10 @@ I am on a team that requires a remote central communication platform in order to
 - Messaging, with the ability for a central group chat, with additional smaller chats between multiple members.
 - Modern Messaging; Ability to share hyperlinks, pictures and videos via chat. Reactions, gifs.
 - Mobile and Desktop support.
-- Video capability, or integration.
+- Call capability, or integration/plugin.
+- Video capability, or integration/plugin.
 - Well Supported, ideally with a long standing track record in the industry space
+- Ideally FOSS
 
 ### Mattermost:
 Mattermost is a well known and trusted communication platform with years of experience in business environments, used by companies such as the US airforce, NASA, Samsung, etc. It promotes itself as a Secure, Resilient, Adaptable tool that will keep your team focused on what the platform core is, communication. It is designed for teams with stringent security & privacy requirements ( GDPR, FINRA,AICPA SOC, barr certification iso 27001), many of these considered top tier regulatory standards. It offers many modern communication functionality, that would be a great candidate for a drop in replacement for our team.
@@ -19,7 +21,7 @@ Mattermost is a well known and trusted communication platform with years of expe
 - Docker deployment
 - industry tool with years of vetted experience and reliability on market
 - Community and Developer documentation and support
-- many integrations + automations/bots
+- many integrations + automation/bots
 - storefront in tool to add official/community integrations and or bots/automatons, Mattermost Marketplace
 - familiar modern platform interface mincing to current team platforms
 - Groups, channels, threads, DMs, Pinned messages
@@ -35,15 +37,20 @@ Mattermost is a well known and trusted communication platform with years of expe
 - RBAC and ACL controls, to shape user access and scope across the service.
 - Bonus: Workflows and task list, and other functions popular in more professionally focused team communication platforms
 - dark mode
+- voice call integration (official mattermost)
+- video call integration (jitsi video and other options)
 
 ### Alternative solutions
 There are many alternatives, but trying to focus on the most promising. Loosely order in value-fit at a limited review at this point in time.
 - Stay on current platform, and find a way to make it work
-- Slack: https://slack.com/
 - Matrix (with element): https://matrix.org/
+- Rocket chat: https://www.rocket.chat/
+- Teamspeak: https://www.teamspeak.com/en/
 - Stoat: https://stoat.chat/
+- Slack: https://slack.com/
 - Roomy: https://github.com/muni-town/roomy
 - Root: https://www.rootapp.com/
+There are other alternatives if willing to limit scope, or break out tools (video and text). Peer-2-Peer become real options with the limiting of scope, that could be reviewed and would lower most of the overhead that a centralized solution has.
 
 ## Deployment Plan
 - Docker deployment on VPS
@@ -61,6 +68,8 @@ There are many alternatives, but trying to focus on the most promising. Loosely 
 - Self Hosting requires Infrastructure management, which could result in downtime and maintenance windows and slower functionality roll outs.
 - Cost (Domain, Server)
 - Data loss, without a regimented backup plan.
+- Mattermost Support Encryption in transit and at rest, but not a true E2EE without a configured plugin
+- WUD (Whatsupdocker) docker sock access, can remove but updates rely on human interaction then
 
 ### Host Requirements:
 mattermost: https://docs.mattermost.com/deployment-guide/software-hardware-requirements.html
@@ -95,12 +104,14 @@ Versions listed at time of this repo creation, the goal would be to stay on the 
 - Caddy - V2.10.2 - Reverse proxy and cert management via built in ACME
 
 ### Install Process
+DNS (Cloudflair) configuration is not reviewed here, nor is the deployment and hardening of the VPS server.
+
 We will be deploying on a debian (13.3.0 Trixie) linux system that is up to date and has the following preinstalled: Git (version 28.2.2) & Docker Engine (version: 28.2.2) & sudo installed, account with sudo level permissions.
 
 1. 
 
 
-### Service Setup Process
+### Mattermost Setup Process
 
 
 ## Resources:
@@ -130,3 +141,5 @@ We will be deploying on a debian (13.3.0 Trixie) linux system that is up to date
 - Website: https://getwud.github.io/wud/#/
 - Community: https://github.com/getwud/wud/discussions
 - Documentation: https://getwud.github.io/wud/#/?id=introduction
+### General
+- helpful research tool: https://discordless.com/
