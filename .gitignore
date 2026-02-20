@@ -1,5 +1,7 @@
-DeploymentFiles/BindMounts/*/**
-DeploymentFiles/BindMounts/*/**/**
+DeploymentFiles/BindMounts/Mattermost/*/**
+DeploymentFiles/BindMounts/Caddy/*/**
+DeploymentFiles/BindMounts/postgres/data/**
+DeploymentFiles/BindMounts/postgres/data/**/**
 DeploymentFiles/.env
 Backups
 Backups/**
