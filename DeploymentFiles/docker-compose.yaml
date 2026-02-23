@@ -1,0 +1,135 @@
+# https://docs.docker.com/compose/environment-variables/
+services:
+  postgres:
+    image: postgres:18-alpine #${POSTGRES_IMAGE_TAG}
+    #container_name: postgres
+    restart: unless-stopped #${RESTART_POLICY} # I prefer unless-stopped, it make troubleshooting/maintenance windows with reboots on my homelab easier to manage dozens of containers
+    env_file:
+      - .env
+    #security_opt:
+    #  - no-new-privileges:true
+    # See https://docs.mattermost.com/administration-guide/scale/scaling-for-enterprise.html
+    # for guidance on memory limits based on your deployment size.
+    mem_limit: 12G
+    read_only: false
+    #tmpfs:
+    #  - /tmp
+    #  - /var/run/postgresql
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      # timezone inside container
+      - TZ=${TIMEZONE}
+
+      # necessary Postgres options/variables
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - Mattermost
+
+  mattermost:
+    depends_on:
+      - postgres
+    image: mattermost/${MATTERMOST_IMAGE}:${MATTERMOST_IMAGE_TAG}
+    container_name: mattermost
+    restart: ${RESTART_POLICY}
+    env_file:
+      - .env
+    security_opt:
+      - no-new-privileges:true
+    # See https://docs.mattermost.com/administration-guide/scale/scaling-for-enterprise.html
+    # for guidance on memory limits based on your deployment size.
+    mem_limit: 2G
+    read_only: ${MATTERMOST_CONTAINER_READONLY}
+    tmpfs:
+      - /tmp
+    ports:
+      - '${APP_PORT}:8065'
+    volumes:
+      - ${MATTERMOST_CONFIG_PATH}:/mattermost/config:rw
+      - ${MATTERMOST_DATA_PATH}:/mattermost/data:rw
+      - ${MATTERMOST_LOGS_PATH}:/mattermost/logs:rw
+      - ${MATTERMOST_PLUGINS_PATH}:/mattermost/plugins:rw
+      - ${MATTERMOST_CLIENT_PLUGINS_PATH}:/mattermost/client/plugins:rw
+      - ${MATTERMOST_BLEVE_INDEXES_PATH}:/mattermost/bleve-indexes:rw
+      # When you want to use SSO with GitLab, you have to add the cert pki chain of GitLab inside Alpine
+      # to avoid Token request failed: certificate signed by unknown authority 
+      # (link: https://github.com/mattermost/mattermost-server/issues/13059 and https://github.com/mattermost/docker/issues/34)
+      # - ${GITLAB_PKI_CHAIN_PATH}:/etc/ssl/certs/pki_chain.pem:ro
+    environment:
+      # timezone inside container
+      - TZ=${TIMEZONE}
+
+      # necessary Mattermost options/variables (see env.example)
+      - MM_SQLSETTINGS_DRIVERNAME=${MM_SQLSETTINGS_DRIVERNAME}
+      - MM_SQLSETTINGS_DATASOURCE=${MM_SQLSETTINGS_DATASOURCE}
+
+      # necessary for bleve
+      - MM_BLEVESETTINGS_INDEXDIR=${MM_BLEVESETTINGS_INDEXDIR}
+
+      # additional settings
+      - MM_SERVICESETTINGS_SITEURL=${MM_SERVICESETTINGS_SITEURL}
+    networks:
+      - Mattermost
+      - CaddyProxyNet
+
+  # caddy:
+  #   image: caddy:${CADDY_IMAGE_TAG:-latest}
+  #   container_name: CaddyProxy
+  #   restart: ${RESTART_POLICY}
+  #   env_file:
+  #     - .env
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   ports:
+  #     - 443:443
+  #   volumes:
+  #     - caddy-config:/config
+  #     - caddy-data:/data
+  #     - ./BindMounts/Caddy/Caddyfile:/etc/caddy:ro # directory where my caddyfile is stored on host system, set to :ro (readonly) for best sec practices
+  #   networks:
+  #     CaddyProxyNet:
+  #       ipv4_address: 172.200.0.200 #hard coding id, doing this for services that require a "trusted-proxy" var to be set, using static ip over range. Setting to a high value to ensure if the containers all boot out of order on host start up, that caddy can reserve an ip without a clash issue.
+
+  whatsupdocker:
+    image: getwud/wud:main
+    container_name: whatsupdocker
+    restart: ${RESTART_POLICY}
+    env_file:
+      - .env
+    security_opt:
+      - no-new-privileges:true
+    #ports:   # No plan on using webgui, but leaving this here for troubleshooting
+    #  - 7512:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WUD_WATCHER_LOCAL_CRON=${CRON_JOB}
+      - WUD_AUTH_BASIC_ADM_USER=${ADM_USER}
+      - WUD_AUTH_BASIC_ADM_HASH=${ADM_PASS}
+      - WUD_WATCHER_LOCAL_WATCHALL=true # check all containers regardless of status (paused, exited,etc)
+      - WUD_TRIGGER_DOCKER_LOCAL_PRUNE=true # this will update and remove the old container image, will prevent unused space
+      - WUD_LOG_LEVEL=debug #collect logs on the debug level
+      - TZ=${TIMEZONE}
+
+volumes:
+  postgres-data:
+    name: postgres-data
+  caddy-config:
+    name: caddy-config #while not important for caddy, I typically like to name my volumes so its easier to ID them and remount them
+  caddy-data:
+    name: caddy-data
+
+networks:
+  Mattermost:
+    name: Mattermost
+    # driver: bridge
+    # internal: true   # optional: prevents external containers from joining network
+  CaddyProxyNet:
+    name: CaddyProxyNet
+    driver: bridge
+    # external: true # uncomment in the event the network exist before hand, troubleshooting line I leave in on my compose files.
+    ipam:
+      config:
+        - subnet: 172.200.0.0/24 #setting the ip range that can be used for this docker network

@@ -143,3 +143,4 @@ We will be deploying on a debian (13.3.0 Trixie) linux system that is up to date
 - Documentation: https://getwud.github.io/wud/#/?id=introduction
 ### General
 - helpful research tool: https://discordless.com/
+- existing install guide for mattermost: https://i12bretro.github.io/tutorials/0889.html
