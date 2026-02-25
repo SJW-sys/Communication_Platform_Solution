@@ -1,0 +1,21 @@
+# I like to breakout my config files into sections so I can easily manage them
+##############
+# Global settings
+##############
+
+{
+    acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}      # highly recommend you limit your API token to the zone and to just dns modifications
+    servers {
+        trusted_proxies cloudflare
+        client_ip_headers Cf-Connecting-Ip
+    }
+}
+
+##############
+# Reverse proxies to different container on same Docker network with a http backend
+##############
+
+mattermost.homelabdemo.mydomain.com {
+        reverse_proxy mattermost:8065
+        tls
+}
