@@ -30,7 +30,7 @@ Mattermost is a well known and trusted communication platform with years of expe
 - Open-Source tooling
 - Free edition (mattermost-team-edition)
 - Trusted by government and other large industries
-- Well upkept
+- supported and regularly updated
 - webapp and clients
 - mobile and desktop platform
 - Built in Authentication server with MFA solutions
@@ -104,12 +104,78 @@ Versions listed at time of this repo creation, the goal would be to stay on the 
 - Caddy - V2.10.2 - Reverse proxy and cert management via built in ACME
 
 ### Install Process
-DNS (Cloudflair) configuration is not reviewed here, nor is the deployment and hardening of the VPS server.
+DNS (Cloudflair) configuration is not reviewed here, nor domain setup, and neither is the deployment and hardening of the VPS server.
 
 We will be deploying on a debian (13.3.0 Trixie) linux system that is up to date and has the following preinstalled: Git (version 28.2.2) & Docker Engine (version: 28.2.2) & sudo installed, account with sudo level permissions.
 
-1. 
+We will be using a custom docker-compose.yaml setup to work with caddy and wud, default mattermost compose files can be found in ./ExampleFiles/docker
 
+0. make and navigate to root structure of the project
+
+    sudo mkdir /opt/docker & cd /opt/docker
+
+1. load repo files to server
+
+    sudo git clone https://github.com/SJW-sys/Communication_Platform_Solution.git
+
+2. Always review external scripts, commands and tools before executing on your system.
+
+3. ensure project folder structure exist, using provided script to simplify process.
+
+    sudo bash ./Communication_Platform_Solution/Scripts/Project/folderdeployment.sh
+     
+4. copy example .env file to a useable file for docker compose. 
+
+    cp ./Communication_Platform_Solution/ExampleFiles/docker/env.example ./Communication_Platform_Solution/DeploymentFiles/.env
+
+    Nginx environment variables left in the event of wanting to use nginx as a reverse proxy instead of caddy.
+
+5. modify/review env file, I use vim, but use whatever text editor (Debian default is 'nano')
+
+    vim ./Communication_Platform_Solution/DeploymentFiles/.env
+
+    I suggest at least reviewing the following:
+    - DOMAIN - ensure this is a valid domain, or ip address w/ port (ie. mydomain.com  or  192.168.0.1:8065) If you use an ipaddress, you will need to modify the docker compose file to allow mattermost port to be accessible to the host.
+    - TIMEZONE
+    - POSTGRES_USER
+    - POSTGRES_PASSWORD
+    - CLOUDFLARE_API_TOKEN
+    - ADM_USER
+    - ADM_PASS
+    - CRON_JOB
+
+6. copy example caddyfile file to a useable file for our project
+
+    cp ./Communication_Platform_Solution/ExampleFiles/caddy/Caddyfile ./Communication_Platform_Solution/DeploymentFiles/BindMounts/Caddy/Caddyfile/
+
+7. modify/review caddyfile for domain, I use vim, but use whatever text editor (Debian default is 'nano')
+
+    vim ./Communication_Platform_Solution/DeploymentFiles/BindMounts/Caddy/Caddyfile/Caddyfile
+
+    You will need to replace 'mattermost.homelabdemo.mydomain.com' with whatever your domain is, aligning with 'DOMAIN' set in step 5.
+
+8. bring up containers
+
+    sudo docker compose -f ./Communication_Platform_Solution/DeploymentFiles/docker-compose.yaml up -d
+
+9. verify running
+
+    sudo docker ps -a
+
+10. access weburl
+
+    internal - http://localhost:8065
+    external - based on what you setup in caddy
+
+    Exposing the service port(8065) externally is not recommended, nor covered in this guide.
+
+    **Important** - If you wiped all data, then redeployed, Mattermost stores a lot of cached data in your webbrowser, so to reach the setup page use your "incognito mode" or wipe history, or ensure you navigate to the root url and not \login.
+
+#### Prod deployment considerations
+- Postgres data bindmount or volume
+- Finer permission controls, see the script
+- Use docker secrets, or a vault for sensitive env values
+- Docker rootless
 
 ### Mattermost Setup Process
 
