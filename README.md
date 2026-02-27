@@ -169,7 +169,7 @@ We will be using a custom docker-compose.yaml setup to work with caddy and wud, 
 
     Exposing the service port(8065) externally is not recommended, nor covered in this guide.
 
-    **Important** - If you wiped all data, then redeployed, Mattermost stores a lot of cached data in your webbrowser, so to reach the setup page use your "incognito mode" or wipe history, or ensure you navigate to the root url and not \login.
+    **Important** - If you wiped all data, then redeployed, you may have cached data in your webbrowser that will redirect you to the login page. To reach the setup page use your "incognito mode" or wipe history, or ensure you navigate to the root url and not \login.
 
 #### Prod deployment considerations
 - Postgres data bindmount or volume
