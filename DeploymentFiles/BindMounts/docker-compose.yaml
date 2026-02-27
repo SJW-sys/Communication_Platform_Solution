@@ -44,8 +44,9 @@ services:
     read_only: ${MATTERMOST_CONTAINER_READONLY}
     tmpfs:
       - /tmp
-    ports:
-      - ${APP_PORT}:8065
+    # Commented out since we will be accessing via caddy  
+    #ports: 
+    #  - ${APP_PORT}:8065
     volumes:
       - ${MATTERMOST_CONFIG_PATH}:/mattermost/config:rw
       - ${MATTERMOST_DATA_PATH}:/mattermost/data:rw
@@ -74,23 +75,23 @@ services:
       - Mattermost
       - CaddyProxyNet
 
-  # caddy:
-  #   image: caddy:${CADDY_IMAGE_TAG:-latest}
-  #   container_name: CaddyProxy
-  #   restart: ${RESTART_POLICY}
-  #   env_file:
-  #     - .env
-  #   security_opt:
-  #     - no-new-privileges:true
-  #   ports:
-  #     - 443:443
-  #   volumes:
-  #     - caddy-config:/config
-  #     - caddy-data:/data
-  #     - ./BindMounts/Caddy/Caddyfile:/etc/caddy:ro # directory where my caddyfile is stored on host system, set to :ro (readonly) for best sec practices
-  #   networks:
-  #     CaddyProxyNet:
-  #       ipv4_address: 172.200.0.200 #hard coding id, doing this for services that require a "trusted-proxy" var to be set, using static ip over range. Setting to a high value to ensure if the containers all boot out of order on host start up, that caddy can reserve an ip without a clash issue.
+  caddy:
+    image: caddy:${CADDY_IMAGE_TAG:-latest}
+    container_name: CaddyProxy
+    restart: ${RESTART_POLICY}
+    env_file:
+      - .env
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 443:443
+    volumes:
+      - caddy-config:/config
+      - caddy-data:/data
+      - ./BindMounts/Caddy/Caddyfile:/etc/caddy:ro # directory where my caddyfile is stored on host system, set to :ro (readonly) for best sec practices
+    networks:
+      CaddyProxyNet:
+        ipv4_address: 172.200.0.200 #hard coding id, doing this for services that require a "trusted-proxy" var to be set, using static ip over range. Setting to a high value to ensure if the containers all boot out of order on host start up, that caddy can reserve an ip without a clash issue.
 
   whatsupdocker:
     image: getwud/wud:main
