@@ -44,7 +44,7 @@ services:
     read_only: ${MATTERMOST_CONTAINER_READONLY}
     tmpfs:
       - /tmp
-    # Commented out since we will be accessing via caddy  
+    # Commented out since we will be accessing via caddy docker network  
     #ports: 
     #  - ${APP_PORT}:8065
     volumes:
